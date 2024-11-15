@@ -1,12 +1,7 @@
 spring:
-  application.name: library-events-producer
-  profiles:
-    active: local
----
-spring:
   config:
     activate:
-      on-profile: local
+      on-profile: prod
   kafka:
     producer:
       bootstrap-servers: localhost:9092,localhost:9093,localhost:9094
