@@ -24,6 +24,7 @@ class LibraryEventsProducer(
         val key = libraryEvent.libraryEventId ?: 0L
         val value = objectMapper.writeValueAsString(libraryEvent)
 
+        // This is a blocking call
         val cf = kafkaTemplate.send(topic, key, value)
         return cf.whenComplete { sendResult, throwable ->
             if (throwable != null) {
