@@ -18,7 +18,8 @@ class LibraryEventsController(private val libraryEventsProducer: LibraryEventsPr
     fun postLibraryEvents(@RequestBody libraryEvent: LibraryEvent): ResponseEntity<LibraryEvent> {
         log.info { "libraryEvent : $libraryEvent" }
 
-        libraryEventsProducer.sendLibraryEvent(libraryEvent)
+        // libraryEventsProducer.sendLibraryEvent(libraryEvent)
+        libraryEventsProducer.sendLibraryEventApproach3(libraryEvent)
         return ResponseEntity.status(HttpStatus.CREATED).body(libraryEvent)
     }
 
