@@ -50,7 +50,7 @@ class LibraryEventsProducer(
         return sendResult
     }
 
-    fun sendLibraryEventApproach3(libraryEvent: LibraryEvent): CompletableFuture<SendResult<Long, String>> {
+    fun sendLibraryEventApproach3(libraryEvent: LibraryEvent): CompletableFuture<SendResult<Long, String>>? {
         val key = libraryEvent.libraryEventId ?: 0L
         val value = objectMapper.writeValueAsString(libraryEvent)
 
