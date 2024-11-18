@@ -8,8 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.*
+import org.springframework.kafka.test.context.EmbeddedKafka
+import org.springframework.test.context.TestPropertySource
 
+@EmbeddedKafka(
+    topics = ["library-events"],
+    partitions = 3
+)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestPropertySource(properties = [
+    "spring.kafka.producer.bootstrap-servers=\${spring.embedded.kafka.brokers}",
+    "spring.kafka.admin.properties.bootstrap.servers=\${spring.embedded.kafka.brokers}"
+])
 class LibraryEventsControllerIntegrationTest {
 
     @Autowired
@@ -29,5 +39,6 @@ class LibraryEventsControllerIntegrationTest {
 
         // then
         Assertions.assertThat(responseEntity.statusCode).isEqualTo(HttpStatus.CREATED)
+        // 2024-11-18T17:53:20.098+09:00  INFO 52036 --- [library-events-producer] [ucer-producer-1] c.s.l.producer.LibraryEventsProducer     : Message sent successfully for the key := 0 and value := {"libraryEventId":null,"libraryEventType":"NEW","book":{"bookId":123,"bookName":"Dilip","bookAuthor":"Kafka Using Spring Boot"}} and partition := 2
     }
 }
