@@ -39,6 +39,12 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+sourceSets{
+    test {
+        java.srcDirs = ['src/test/kotlin/unit', 'src/test/kotlin/intg']
+    }
+}
+
 kotlin {
     compilerOptions {
         freeCompilerArgs.addAll '-Xjsr305=strict'
