@@ -9,11 +9,9 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
-import org.springframework.kafka.support.SendResult
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import java.util.concurrent.CompletableFuture
 
 @WebMvcTest(controllers = [LibraryEventsController::class])
 class LibraryEventsControllerUnitTest {
@@ -33,7 +31,7 @@ class LibraryEventsControllerUnitTest {
         val json = objectMapper.writeValueAsString(TestUtil.libraryEventRecord())
 
         // When
-        every { libraryEventsProducer.sendLibraryEventApproach3(any()) } returns CompletableFuture.completedFuture(SendResult(null, null))
+        every { libraryEventsProducer.sendLibraryEventApproach3(any()) } returns null
 
         // Then
         mockMvc.perform(
@@ -41,6 +39,22 @@ class LibraryEventsControllerUnitTest {
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isCreated)
+    }
+
+    @Test
+    fun postLibraryEventsInvalidValues() {
+        // Given
+        val json = objectMapper.writeValueAsString(TestUtil.libraryEventRecordWithInvalidBook())
+
+        // When
+        every { libraryEventsProducer.sendLibraryEventApproach3(any()) } returns null
+
+        // Then
+        mockMvc.perform(
+            MockMvcRequestBuilders.post("/v1/libraryevent")
+                .content(json)
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().is4xxClientError)
     }
 
 

@@ -3,6 +3,7 @@ package com.sushistack.libproducer.controller
 import com.sushistack.libproducer.domain.LibraryEvent
 import com.sushistack.libproducer.producer.LibraryEventsProducer
 import io.github.oshai.kotlinlogging.KotlinLogging
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -15,7 +16,7 @@ class LibraryEventsController(private val libraryEventsProducer: LibraryEventsPr
     private var log = KotlinLogging.logger {}
 
     @PostMapping("/v1/libraryevent")
-    fun postLibraryEvents(@RequestBody libraryEvent: LibraryEvent): ResponseEntity<LibraryEvent> {
+    fun postLibraryEvents(@Valid @RequestBody libraryEvent: LibraryEvent): ResponseEntity<LibraryEvent> {
         log.info { "libraryEvent : $libraryEvent" }
 
         // libraryEventsProducer.sendLibraryEvent(libraryEvent)
