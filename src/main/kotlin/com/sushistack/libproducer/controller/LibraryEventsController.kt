@@ -34,7 +34,7 @@ class LibraryEventsController(private val libraryEventsProducer: LibraryEventsPr
         if (badRequest != null) return badRequest
 
         libraryEventsProducer.sendLibraryEventApproach2(libraryEvent)
-        log.info("after produce call")
+        log.info { "after produce call" }
         return ResponseEntity.status(HttpStatus.OK).body(libraryEvent)
     }
 
